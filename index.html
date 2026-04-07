@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar System SPA</title>
+
+    <!-- Google Fonts for UI text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:wght@400;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Import Map to handle Three.js and modules correctly without a bundler -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <!-- GSAP (3.12.5) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+</head>
+<body>
+    <!-- 3D Canvas Container -->
+    <div id="canvas-container"></div>
+
+    <!-- UI Overlay Container -->
+    <div id="ui-container">
+        <!-- Back Button, initially hidden -->
+        <button id="back-button" class="hidden">BACK</button>
+
+        <!-- Planet Info Text, initially hidden -->
+        <div id="planet-info" class="hidden">
+            <h1 id="planet-name">Planet Name</h1>
+            <div id="planet-description">
+                <!-- 5 lines of text here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Scripts as Modules to support Three.js post-processing correctly -->
+    <script type="module" src="js/AudioManager.js"></script>
+    <script type="module" src="js/PlanetFactory.js"></script>
+    <script type="module" src="js/SceneManager.js"></script>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

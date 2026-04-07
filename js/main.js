@@ -1,0 +1,141 @@
+import * as THREE from 'three';
+import { SceneManager } from './SceneManager.js';
+import { PlanetFactory, planetData } from './PlanetFactory.js';
+import { AudioManager } from './AudioManager.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+    const canvasContainer = document.getElementById('canvas-container');
+    const backButton = document.getElementById('back-button');
+    const planetInfo = document.getElementById('planet-info');
+    const planetName = document.getElementById('planet-name');
+    const planetDescription = document.getElementById('planet-description');
+
+    // Initialize core systems
+    const sceneManager = new SceneManager(canvasContainer);
+    const planetFactory = new PlanetFactory();
+    const audioManager = new AudioManager();
+
+    // Populate scene with planets
+    const planetKeys = Object.keys(planetData);
+    planetKeys.forEach(key => {
+        const planetGroup = planetFactory.createPlanet(key);
+        sceneManager.scene.add(planetGroup);
+    });
+
+    // Start Warp Intro
+    // User interaction is often required for AudioContext. We start audio on first click anywhere.
+    let audioInitialized = false;
+    window.addEventListener('click', () => {
+        if (!audioInitialized) {
+            audioManager.init();
+            audioManager.playBackgroundMusic();
+            audioInitialized = true;
+        }
+    }, { once: true });
+
+    sceneManager.startWarpIntro(() => {
+        // Callback when intro finishes
+        console.log("Warp Intro Complete. System ready.");
+        // If user already clicked, we could play a subtle intro sound here.
+        if (audioInitialized) {
+            audioManager.playWhoosh(1.5);
+        }
+    });
+
+    // Ensure THREE is globally available in main script scope just in case needed by modules
+    window.THREE = THREE;
+
+    // Animation Loop
+    const clock = new THREE.Clock();
+    function animate() {
+        requestAnimationFrame(animate);
+        const elapsedTime = clock.getElapsedTime();
+        sceneManager.render(elapsedTime);
+    }
+    animate();
+
+    // Handle Resize
+    window.addEventListener('resize', () => {
+        sceneManager.resize(window.innerWidth, window.innerHeight);
+    });
+
+    // UI and Audio Event Listeners from SceneManager
+    window.addEventListener('planetZoom', (event) => {
+        const data = event.detail;
+
+        // Show Back Button
+        backButton.classList.remove('hidden');
+
+        // Update Audio
+        if (audioInitialized) {
+            audioManager.playWhoosh(1.0);
+            audioManager.setZoomMode(true);
+            setTimeout(() => audioManager.playElectronicPulse(), 1000);
+        }
+
+        // Update UI
+        planetName.textContent = data.name;
+
+        // Clear previous description and classes
+        planetDescription.innerHTML = '';
+        planetInfo.className = ''; // reset
+
+        // Apply specific typography
+        if (data.fontClass) {
+            planetInfo.classList.add(data.fontClass);
+        }
+
+        // Apply border color dynamically
+        const hexColor = '#' + new THREE.Color(data.color).getHexString();
+        planetInfo.style.borderLeftColor = hexColor;
+
+        // Build HTML for text
+        data.text.forEach(line => {
+            const p = document.createElement('p');
+            p.className = 'description-line';
+            p.textContent = line;
+            planetDescription.appendChild(p);
+        });
+
+        // Show UI via GSAP
+        planetInfo.classList.remove('hidden');
+        gsap.to(planetInfo, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            delay: 0.5,
+            ease: "power2.out"
+        });
+    });
+
+    window.addEventListener('planetZoomOut', () => {
+        // Hide Back Button
+        backButton.classList.add('hidden');
+
+        // Update Audio
+        if (audioInitialized) {
+            audioManager.playWhoosh(1.0);
+            audioManager.setZoomMode(false);
+        }
+
+        // Hide UI via GSAP
+        gsap.to(planetInfo, {
+            opacity: 0,
+            y: 20,
+            duration: 0.5,
+            ease: "power2.in",
+            onComplete: () => {
+                planetInfo.classList.add('hidden');
+            }
+        });
+    });
+
+    // Back Button Click Handler
+    backButton.addEventListener('click', (e) => {
+        e.stopPropagation(); // Evitar que el raycaster lo detecte como click en el espacio vacío
+        sceneManager.zoomOut();
+    });
+
+    // Notify user to interact for audio
+    console.log("Click anywhere to enable audio and interact with planets.");
+});
