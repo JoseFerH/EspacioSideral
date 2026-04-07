@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 export class SceneManager {
     constructor(canvasContainer) {
@@ -37,6 +38,14 @@ export class SceneManager {
         // Interaction
         this.raycaster = new THREE.Raycaster();
         this.mouse = new THREE.Vector2();
+
+        // OrbitControls
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+        this.controls.enableDamping = true;
+        this.controls.dampingFactor = 0.05;
+        this.controls.maxDistance = 600;
+        // Desactivar controles durante la animación de warp
+        this.controls.enabled = false;
 
         this.initPostProcessing();
         this.initStars();
@@ -91,6 +100,9 @@ export class SceneManager {
             planetWorldPos.z + radius * 3
         );
 
+        // Desactivar controles interactivos durante el zoom
+        this.controls.enabled = false;
+
         // Animar cámara hacia el planeta
         gsap.to(this.camera.position, {
             x: targetPos.x,
@@ -100,6 +112,15 @@ export class SceneManager {
             ease: "power2.inOut",
             onUpdate: () => {
                 this.camera.lookAt(planetWorldPos);
+            },
+            onComplete: () => {
+                // Al finalizar la animación, actualizar el target de los controles
+                this.controls.target.copy(planetWorldPos);
+                this.controls.enabled = true; // Reactivar controles alrededor del planeta
+
+                // Restringir el zoom y paneo mientras se observa el planeta
+                this.controls.minDistance = radius * 1.5;
+                this.controls.maxDistance = radius * 10;
             }
         });
     }
@@ -117,6 +138,18 @@ export class SceneManager {
         // Emitir evento para UI y Audio
         window.dispatchEvent(new CustomEvent('planetZoomOut'));
 
+        // Desactivar controles durante la animación
+        this.controls.enabled = false;
+
+        // Animar el target de los controles de vuelta al centro
+        gsap.to(this.controls.target, {
+            x: 0,
+            y: 0,
+            z: 0,
+            duration: 2,
+            ease: "power2.inOut"
+        });
+
         // Volver a posición global
         gsap.to(this.camera.position, {
             x: 0,
@@ -126,6 +159,12 @@ export class SceneManager {
             ease: "power2.inOut",
             onUpdate: () => {
                 this.camera.lookAt(0, 0, 0);
+            },
+            onComplete: () => {
+                this.controls.enabled = true; // Reactivar controles
+                // Restaurar restricciones globales
+                this.controls.minDistance = 0;
+                this.controls.maxDistance = 600;
             }
         });
     }
@@ -230,6 +269,8 @@ export class SceneManager {
                 duration: 1
             });
 
+            // Habilitar controles
+            this.controls.enabled = true;
         }, 3000);
     }
 
@@ -262,16 +303,17 @@ export class SceneManager {
         // Actualizar planetas
         this.updatePlanets(time);
 
-        // Si estamos en zoom, mantener la cámara mirando al planeta actual
-        if (this.currentZoomedPlanet) {
+        // Update controls
+        if (this.controls.enabled) {
+            this.controls.update();
+        }
+
+        // Si estamos en zoom y la cámara de animación ha terminado (controls.enabled === true),
+        // mantenemos el target de los controles en la posición del planeta.
+        if (this.currentZoomedPlanet && this.controls.enabled) {
             const planetWorldPos = new THREE.Vector3();
             this.currentZoomedPlanet.getWorldPosition(planetWorldPos);
-            this.camera.lookAt(planetWorldPos);
-
-            // Y actualizar la posición de la cámara para que siga la órbita (opcional, para que no se escape si sigue orbitando)
-            // Aquí lo dejamos quieto asumiendo que pausamos la órbita global al hacer zoom, como está arriba en updatePlanets
-        } else if (!this.isWarping) {
-            this.camera.lookAt(0,0,0);
+            this.controls.target.copy(planetWorldPos);
         }
 
         if (this.composer) {
