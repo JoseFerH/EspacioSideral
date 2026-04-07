@@ -1,13 +1,26 @@
 import * as THREE from 'three';
 
 export const planetData = {
-    sun: { radius: 10, distance: 0, color: 0xffddaa, name: 'Sol' },
+    sun: {
+        radius: 10,
+        distance: 0,
+        color: 0xffea00,
+        name: 'Sol',
+        fontClass: 'font-elegante',
+        text: [
+            "La estrella central del sistema.",
+            "Una esfera perfecta de plasma caliente.",
+            "Emite la luz y energía vitales.",
+            "Contiene casi toda la masa local.",
+            "Su gravedad mantiene todo en órbita."
+        ]
+    },
     mercury: {
         name: 'Mercurio',
         radius: 0.5,
         distance: 15,
         speed: 0.04,
-        color: 0x888888,
+        color: 0xaaaaaa,
         fontClass: 'font-minimalista',
         text: [
             "El planeta más cercano y rápido.",
@@ -22,7 +35,7 @@ export const planetData = {
         radius: 1.2,
         distance: 22,
         speed: 0.015,
-        color: 0xeebb88,
+        color: 0xff9900,
         fontClass: 'font-elegante',
         text: [
             "El gemelo tóxico de la Tierra.",
@@ -37,7 +50,7 @@ export const planetData = {
         radius: 1.25,
         distance: 30,
         speed: 0.01,
-        color: 0x2266cc,
+        color: 0x00aaff,
         fontClass: 'font-minimalista',
         text: [
             "Nuestro hogar, el punto azul pálido.",
@@ -52,7 +65,7 @@ export const planetData = {
         radius: 0.6,
         distance: 40,
         speed: 0.008,
-        color: 0xcc4422,
+        color: 0xff3300,
         fontClass: 'font-robotica',
         text: [
             "El planeta rojo cubierto de óxido.",
@@ -67,7 +80,7 @@ export const planetData = {
         radius: 4,
         distance: 55,
         speed: 0.002,
-        color: 0xccaabb,
+        color: 0xffcc88,
         fontClass: 'font-elegante',
         text: [
             "El gigante gaseoso de gran tamaño.",
@@ -82,7 +95,7 @@ export const planetData = {
         radius: 3.5,
         distance: 75,
         speed: 0.0009,
-        color: 0xeedd88,
+        color: 0xffeebb,
         fontClass: 'font-elegante',
         text: [
             "Famoso por su extenso sistema de anillos.",
@@ -97,7 +110,7 @@ export const planetData = {
         radius: 2,
         distance: 95,
         speed: 0.0004,
-        color: 0x88ccdd,
+        color: 0x00ffff,
         fontClass: 'font-scifi',
         text: [
             "El gigante de hielo inclinado lateralmente.",
@@ -112,7 +125,7 @@ export const planetData = {
         radius: 1.9,
         distance: 110,
         speed: 0.0001,
-        color: 0x3344cc,
+        color: 0x0055ff,
         fontClass: 'font-minimalista',
         text: [
             "El planeta más alejado del sol.",

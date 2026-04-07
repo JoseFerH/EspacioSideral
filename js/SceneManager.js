@@ -66,12 +66,13 @@ export class SceneManager {
 
         this.raycaster.setFromCamera(this.mouse, this.camera);
 
-        // Buscar intersecciones con los meshes de los planetas
+        // Buscar intersecciones con los meshes de los planetas y el sol
         const intersects = this.raycaster.intersectObjects(this.scene.children, true);
 
         for (let i = 0; i < intersects.length; i++) {
             const object = intersects[i].object;
-            if (object.userData && object.userData.isPlanet) {
+            // Aceptar cualquier objeto que tenga un 'id' en userData (planetas o sol)
+            if (object.userData && object.userData.id) {
                 this.zoomToPlanet(object);
                 break;
             }
