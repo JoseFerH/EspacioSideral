@@ -314,6 +314,13 @@ export class SceneManager {
         // Update controls
         if (this.controls.enabled) {
             this.controls.update();
+
+            // Easter egg check: distance from origin
+            const dist = this.camera.position.distanceTo(new THREE.Vector3(0, 0, 0));
+            if (dist > 590 && !this.currentZoomedPlanet && !this.isWarping) {
+                // We're approaching the maxDistance boundary
+                window.dispatchEvent(new CustomEvent('easterEggTrigger'));
+            }
         }
 
         // Si estamos en zoom y la cámara de animación ha terminado (controls.enabled === true),

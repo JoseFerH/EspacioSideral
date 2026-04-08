@@ -204,6 +204,42 @@ document.addEventListener('DOMContentLoaded', () => {
         sceneManager.zoomOut();
     });
 
+    // Easter Egg Event Listener
+    const easterEgg = document.getElementById('easter-egg');
+    const easterEggBack = document.getElementById('easter-egg-back');
+
+    window.addEventListener('easterEggTrigger', () => {
+        if (easterEgg.classList.contains('hidden')) {
+            easterEgg.classList.remove('hidden');
+            gsap.to(easterEgg, { opacity: 1, duration: 1.5, ease: "power2.inOut" });
+
+            // Ocultar la UI normal y pausar controles temporalmente
+            sceneManager.controls.enabled = false;
+        }
+    });
+
+    easterEggBack.addEventListener('click', () => {
+        gsap.to(easterEgg, {
+            opacity: 0,
+            duration: 1,
+            onComplete: () => {
+                easterEgg.classList.add('hidden');
+
+                // Reposicionar la cámara más cerca
+                gsap.to(sceneManager.camera.position, {
+                    x: 0,
+                    y: 80,
+                    z: 200,
+                    duration: 2,
+                    ease: "power2.out",
+                    onComplete: () => {
+                        sceneManager.controls.enabled = true;
+                    }
+                });
+            }
+        });
+    });
+
     // Notify user to interact for audio
     console.log("Click anywhere to enable audio and interact with planets.");
 });
