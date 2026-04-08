@@ -35,6 +35,48 @@ body, html {
     pointer-events: none; /* Let clicks pass through by default */
 }
 
+/* Start Screen */
+#start-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000; /* Fondo negro sólido para ocultar el universo al principio */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50; /* Por encima de todo */
+    transition: opacity 1s ease-in-out;
+}
+
+#start-button {
+    padding: 15px 40px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 20px;
+    color: #fff;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-radius: 50px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    outline: none;
+}
+
+#start-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+    transform: scale(1.05);
+}
+
+#start-button:active {
+    transform: scale(0.95);
+}
+
 /* Back Button */
 #back-button {
     position: absolute;

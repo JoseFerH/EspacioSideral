@@ -28,34 +28,42 @@ document.addEventListener('DOMContentLoaded', () => {
         sceneManager.scene.add(planetGroup);
     });
 
-    // Start Warp Intro
-    // User interaction is often required for AudioContext. We start audio on first click anywhere.
+    // Handle Start Screen
+    const startScreen = document.getElementById('start-screen');
+    const startButton = document.getElementById('start-button');
     let audioInitialized = false;
-    window.addEventListener('click', () => {
-        if (!audioInitialized) {
-            audioManager.init();
-            audioManager.playBackgroundMusic();
-            audioInitialized = true;
-        }
-    }, { once: true });
 
-    sceneManager.startWarpIntro(() => {
-        // Callback when intro finishes
-        console.log("Warp Intro Complete. System ready.");
-        // If user already clicked, we could play a subtle intro sound here.
-        if (audioInitialized) {
+    startButton.addEventListener('click', () => {
+        // Initialize Audio context on user gesture
+        audioManager.init();
+        audioManager.playBackgroundMusic();
+        audioInitialized = true;
+
+        // Fade out and remove start screen
+        gsap.to(startScreen, {
+            opacity: 0,
+            duration: 1,
+            onComplete: () => {
+                startScreen.style.display = 'none';
+            }
+        });
+
+        // Immediately start Warp Intro
+        sceneManager.startWarpIntro(() => {
+            // Callback when intro finishes
+            console.log("Warp Intro Complete. System ready.");
             audioManager.playWhoosh(1.5);
-        }
 
-        // Mostrar primer paso del tutorial (mover)
-        if (tutorialState === 0) {
-            tutorialState = 1;
-            tutorialOverlay.classList.remove('hidden');
-            gsap.to(tutorialOverlay, { opacity: 1, duration: 1, delay: 0.5 });
+            // Mostrar primer paso del tutorial (mover)
+            if (tutorialState === 0) {
+                tutorialState = 1;
+                tutorialOverlay.classList.remove('hidden');
+                gsap.to(tutorialOverlay, { opacity: 1, duration: 1, delay: 0.5 });
 
-            // Listen for first interaction to switch to 'tap' step
-            sceneManager.controls.addEventListener('start', onFirstInteraction);
-        }
+                // Listen for first interaction to switch to 'tap' step
+                sceneManager.controls.addEventListener('start', onFirstInteraction);
+            }
+        });
     });
 
     function onFirstInteraction() {

@@ -39,31 +39,46 @@ export class AudioManager {
         this.droneFilter.connect(this.droneGain);
         this.droneGain.connect(this.masterGain);
 
-        // Create a rich, dissonant/spacious drone using multiple oscillators
-        const frequencies = [55, 110, 165.5, 220, 275]; // A1, A2, detuned fifths/octaves
+        // Create a rich "Interstellar" organ/strings chord using multiple oscillators
+        // Chord: Am9 (A, C, E, G, B) across different octaves
+        const baseA = 55; // A1
+        const frequencies = [
+            baseA,           // Root (A1)
+            baseA * 2,       // Octave (A2)
+            baseA * 2.378,   // Minor third (C3 approx 130.8 Hz)
+            baseA * 2.996,   // Perfect fifth (E3 approx 164.8 Hz)
+            baseA * 3.563,   // Minor seventh (G3 approx 196 Hz)
+            baseA * 4.489    // Major ninth (B3 approx 246.9 Hz)
+        ];
 
         frequencies.forEach((freq, index) => {
             const osc = this.audioContext.createOscillator();
-            osc.type = index % 2 === 0 ? 'sine' : 'triangle';
+            // Use sawtooth and triangle for a brighter, more "organ-like" or string texture
+            osc.type = index % 2 === 0 ? 'sawtooth' : 'triangle';
             osc.frequency.value = freq;
 
-            // Add slight LFO for movement
+            // Add slow LFO to simulate breathing/phasing strings or organ modulation
             const lfo = this.audioContext.createOscillator();
             lfo.type = 'sine';
-            lfo.frequency.value = 0.1 + (index * 0.05); // slow modulation
+            lfo.frequency.value = 0.05 + (index * 0.02); // very slow modulation
 
             const lfoGain = this.audioContext.createGain();
-            lfoGain.gain.value = freq * 0.02; // modulate frequency slightly
+            lfoGain.gain.value = freq * 0.01; // subtle pitch drift
 
             lfo.connect(lfoGain);
             lfoGain.connect(osc.frequency);
 
-            osc.connect(this.droneFilter);
+            // Per-oscillator volume to balance the chord (lower the high frequencies)
+            const oscGain = this.audioContext.createGain();
+            oscGain.gain.value = 1.0 / (index + 1.5);
+
+            osc.connect(oscGain);
+            oscGain.connect(this.droneFilter);
 
             osc.start();
             lfo.start();
 
-            this.droneOscillators.push({ osc, lfo, lfoGain });
+            this.droneOscillators.push({ osc, lfo, lfoGain, oscGain });
         });
 
         this.isDronePlaying = true;
