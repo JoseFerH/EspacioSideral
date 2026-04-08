@@ -1,0 +1,6 @@
+127.0.0.1 - - [08/Apr/2026 21:39:50] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [08/Apr/2026 21:39:50] "GET /style.css HTTP/1.1" 200 -
+127.0.0.1 - - [08/Apr/2026 21:39:50] "GET /js/AudioManager.js HTTP/1.1" 200 -
+127.0.0.1 - - [08/Apr/2026 21:39:50] "GET /js/PlanetFactory.js HTTP/1.1" 200 -
+127.0.0.1 - - [08/Apr/2026 21:39:50] "GET /js/SceneManager.js HTTP/1.1" 200 -
+127.0.0.1 - - [08/Apr/2026 21:39:50] "GET /js/main.js HTTP/1.1" 200 -

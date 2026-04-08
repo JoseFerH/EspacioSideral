@@ -8,11 +8,9 @@ export const planetData = {
         name: 'Sol',
         fontClass: 'font-elegante',
         text: [
-            "La estrella central del sistema.",
-            "Una esfera perfecta de plasma caliente.",
-            "Emite la luz y energía vitales.",
-            "Contiene casi toda la masa local.",
-            "Su gravedad mantiene todo en órbita."
+            "El Sol es el motor de gravedad que lo mueve todo,",
+            "del mismo modo en que tú has sido el motor",
+            "que me motiva a mejorar cada día."
         ]
     },
     mercury: {
@@ -23,11 +21,10 @@ export const planetData = {
         color: 0xaaaaaa,
         fontClass: 'font-minimalista',
         text: [
-            "El planeta más cercano y rápido.",
-            "Superficie rocosa con cráteres por impactos.",
-            "No tiene atmósfera que retenga calor.",
-            "Temperaturas extremas entre día y noche.",
-            "Un mundo silencioso y grisáceo."
+            "Al ser el planeta más rápido y cercano al Sol,",
+            "es el más atraído hacia él;",
+            "su velocidad es lo único que evita",
+            "que caiga en su interior."
         ]
     },
     venus: {
@@ -38,11 +35,10 @@ export const planetData = {
         color: 0xff9900,
         fontClass: 'font-elegante',
         text: [
-            "El gemelo tóxico de la Tierra.",
-            "Atmósfera densa con lluvia de ácido.",
-            "Efecto invernadero descontrolado e infernal calor.",
-            "Gira en dirección contraria a muchos.",
-            "Brilla intensamente en nuestro cielo."
+            "Es el planeta más caliente.",
+            "A pesar de no ser el más cercano al Sol,",
+            "su atmósfera lo convierte en",
+            "el más afectado por el calor."
         ]
     },
     earth: {
@@ -53,11 +49,10 @@ export const planetData = {
         color: 0x00aaff,
         fontClass: 'font-minimalista',
         text: [
-            "Nuestro hogar, el punto azul pálido.",
-            "Único planeta conocido que alberga vida.",
-            "Superficie cubierta mayormente por agua líquida.",
-            "Atmósfera rica en oxígeno y nitrógeno.",
-            "Posee un gran satélite natural, la Luna."
+            "¿Sabías que hay más de 8,200 millones",
+            "de personas en el mundo?",
+            "Aun así, tuve la suerte de conocerte.",
+            "Qué curioso, ¿verdad?"
         ]
     },
     mars: {
@@ -68,11 +63,10 @@ export const planetData = {
         color: 0xff3300,
         fontClass: 'font-robotica',
         text: [
-            "El planeta rojo cubierto de óxido.",
-            "Tiene el volcán más grande del sistema.",
-            "Antiguos cauces de ríos ahora secos.",
-            "Objetivo principal para futura exploración humana.",
-            "Frecuentes tormentas de polvo lo envuelven."
+            "Representa la esperanza para la humanidad:",
+            "un segundo hogar.",
+            "No sé tú, pero yo sí creo que somos capaces",
+            "de llegar a Marte."
         ]
     },
     jupiter: {
@@ -83,11 +77,10 @@ export const planetData = {
         color: 0xffcc88,
         fontClass: 'font-elegante',
         text: [
-            "El gigante gaseoso de gran tamaño.",
-            "La Gran Mancha Roja es gigante.",
-            "Fuertes tormentas recorren su densa atmósfera.",
-            "Tiene un complejo sistema de anillos.",
-            "Docenas de lunas orbitan este mundo."
+            "Es tan grande que en su interior",
+            "caben 1,300 Tierras. ¡Wow!",
+            "Imagina a 1,300 Sarinas",
+            "compitiendo entre sí."
         ]
     },
     saturn: {
@@ -98,11 +91,10 @@ export const planetData = {
         color: 0xffeebb,
         fontClass: 'font-elegante',
         text: [
-            "Famoso por su extenso sistema de anillos.",
-            "Un mundo gaseoso de belleza sin igual.",
-            "Vientos muy rápidos en el ecuador.",
-            "Menos denso que el agua líquida.",
-            "Una joya en el cielo nocturno."
+            "Se siente muy especial por sus",
+            "anillos de hielo y roca.",
+            "Si los planetas fueran un grupo de amigos,",
+            "¿quién crees que le dio los anillos?"
         ]
     },
     uranus: {
@@ -113,11 +105,9 @@ export const planetData = {
         color: 0x00ffff,
         fontClass: 'font-scifi',
         text: [
-            "El gigante de hielo inclinado lateralmente.",
-            "Color azul claro por el metano.",
-            "Tiene anillos oscuros y tenues alrededor.",
-            "Temperaturas increíblemente frías en su interior.",
-            "Gira de lado como un barril."
+            "Parece que va un poco tomado",
+            "(quizás por tanto vino), porque rota totalmente de lado;",
+            "su eje tiene una inclinación de casi 90°."
         ]
     },
     neptune: {
@@ -128,11 +118,10 @@ export const planetData = {
         color: 0x0055ff,
         fontClass: 'font-minimalista',
         text: [
-            "El planeta más alejado del sol.",
-            "Fuertes vientos supersónicos azotan su superficie.",
-            "Un mundo oscuro, frío y helado.",
-            "Hermoso color azul intenso y profundo.",
-            "Tarda más de cien años orbitando."
+            "Es el más lejano, frío y oscuro,",
+            "como el corazón de algunas personas.",
+            "¿Se sentirá solo al estar a tanta",
+            "distancia de los demás?"
         ]
     }
 };
