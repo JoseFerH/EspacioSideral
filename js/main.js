@@ -107,9 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const data = event.detail;
 
-        // Show Back Button
-        backButton.classList.remove('hidden');
-
         // Update Audio
         if (audioInitialized) {
             audioManager.playWhoosh(1.0);
@@ -117,39 +114,58 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => audioManager.playElectronicPulse(), 1000);
         }
 
-        // Update UI
-        planetName.textContent = data.name;
+        // Fade out existing info if visible, then swap data and fade back in
+        const updateUIContent = () => {
+            // Show Back Button
+            backButton.classList.remove('hidden');
 
-        // Clear previous description and classes
-        planetDescription.innerHTML = '';
-        planetInfo.className = ''; // reset
+            planetName.textContent = data.name;
 
-        // Apply specific typography
-        if (data.fontClass) {
-            planetInfo.classList.add(data.fontClass);
+            // Clear previous description and classes
+            planetDescription.innerHTML = '';
+            planetInfo.className = ''; // reset
+
+            // Apply specific typography
+            if (data.fontClass) {
+                planetInfo.classList.add(data.fontClass);
+            }
+
+            // Apply border color dynamically
+            const hexColor = '#' + new THREE.Color(data.color).getHexString();
+            planetInfo.style.borderLeftColor = hexColor;
+
+            // Build HTML for text
+            data.text.forEach(line => {
+                const p = document.createElement('p');
+                p.className = 'description-line';
+                p.textContent = line;
+                planetDescription.appendChild(p);
+            });
+
+            // Show UI via GSAP
+            planetInfo.classList.remove('hidden');
+            gsap.to(planetInfo, {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.5,
+                ease: "power2.out"
+            });
+        };
+
+        if (!planetInfo.classList.contains('hidden') && planetInfo.style.opacity > 0) {
+            // UI is already visible (jumping from planet to planet)
+            gsap.to(planetInfo, {
+                opacity: 0,
+                y: 20,
+                duration: 0.3,
+                ease: "power2.in",
+                onComplete: updateUIContent
+            });
+        } else {
+            // UI is hidden
+            updateUIContent();
         }
-
-        // Apply border color dynamically
-        const hexColor = '#' + new THREE.Color(data.color).getHexString();
-        planetInfo.style.borderLeftColor = hexColor;
-
-        // Build HTML for text
-        data.text.forEach(line => {
-            const p = document.createElement('p');
-            p.className = 'description-line';
-            p.textContent = line;
-            planetDescription.appendChild(p);
-        });
-
-        // Show UI via GSAP
-        planetInfo.classList.remove('hidden');
-        gsap.to(planetInfo, {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            delay: 0.5,
-            ease: "power2.out"
-        });
     });
 
     window.addEventListener('planetZoomOut', () => {

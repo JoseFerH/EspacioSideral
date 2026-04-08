@@ -56,7 +56,6 @@ export class SceneManager {
 
     onMouseClick(event) {
         if (this.isWarping) return;
-        if (this.currentZoomedPlanet) return; // Ya estamos en zoom
 
         // Ignorar clics en UI
         if (event.target.id === 'back-button' || event.target.closest('#planet-info')) return;
@@ -73,6 +72,9 @@ export class SceneManager {
             const object = intersects[i].object;
             // Aceptar cualquier objeto que tenga un 'id' en userData (planetas o sol)
             if (object.userData && object.userData.id) {
+                // Ignore if we are clicking on the exact planet we are currently zoomed into
+                if (this.currentZoomedPlanet === object) break;
+
                 this.zoomToPlanet(object);
                 break;
             }
@@ -80,9 +82,14 @@ export class SceneManager {
     }
 
     zoomToPlanet(planetMesh) {
+        // Si ya hay un planeta zoomeado, desactivamos su atmósfera primero
+        if (this.currentZoomedPlanet && this.currentZoomedPlanet.userData.atmosphere) {
+            this.currentZoomedPlanet.userData.atmosphere.visible = false;
+        }
+
         this.currentZoomedPlanet = planetMesh;
 
-        // Activar atmósfera
+        // Activar atmósfera del nuevo planeta
         if (planetMesh.userData.atmosphere) {
             planetMesh.userData.atmosphere.visible = true;
         }
