@@ -92,6 +92,54 @@ body, html {
     margin-bottom: 8px;
 }
 
+/* Tutorial Overlay */
+#tutorial-overlay {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+    z-index: 20;
+    opacity: 0; /* Animated by GSAP */
+}
+
+.tut-step {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    color: #fff;
+    text-shadow: 0 0 5px rgba(255,255,255,0.5);
+}
+
+.tut-step svg {
+    width: 24px;
+    height: 24px;
+}
+
+#tut-move svg {
+    animation: swipeAnim 2s infinite ease-in-out;
+}
+
+#tut-tap svg {
+    animation: tapPulse 1.5s infinite ease-in-out;
+}
+
+@keyframes swipeAnim {
+    0%, 100% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+}
+
+@keyframes tapPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(0.8); opacity: 0.5; }
+}
+
 /* Utility Classes */
 .hidden {
     display: none !important;

@@ -10,6 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const planetName = document.getElementById('planet-name');
     const planetDescription = document.getElementById('planet-description');
 
+    // Tutorial elements
+    const tutorialOverlay = document.getElementById('tutorial-overlay');
+    const tutMove = document.getElementById('tut-move');
+    const tutTap = document.getElementById('tut-tap');
+    let tutorialState = 0; // 0: hidden, 1: showing move, 2: showing tap, 3: completed
+
     // Initialize core systems
     const sceneManager = new SceneManager(canvasContainer);
     const planetFactory = new PlanetFactory();
@@ -40,7 +46,35 @@ document.addEventListener('DOMContentLoaded', () => {
         if (audioInitialized) {
             audioManager.playWhoosh(1.5);
         }
+
+        // Mostrar primer paso del tutorial (mover)
+        if (tutorialState === 0) {
+            tutorialState = 1;
+            tutorialOverlay.classList.remove('hidden');
+            gsap.to(tutorialOverlay, { opacity: 1, duration: 1, delay: 0.5 });
+
+            // Listen for first interaction to switch to 'tap' step
+            sceneManager.controls.addEventListener('start', onFirstInteraction);
+        }
     });
+
+    function onFirstInteraction() {
+        if (tutorialState === 1) {
+            tutorialState = 2;
+            sceneManager.controls.removeEventListener('start', onFirstInteraction);
+
+            // Transición suave entre tutoriales
+            gsap.to(tutorialOverlay, {
+                opacity: 0,
+                duration: 0.5,
+                onComplete: () => {
+                    tutMove.classList.add('hidden');
+                    tutTap.classList.remove('hidden');
+                    gsap.to(tutorialOverlay, { opacity: 1, duration: 0.5 });
+                }
+            });
+        }
+    }
 
     // Ensure THREE is globally available in main script scope just in case needed by modules
     window.THREE = THREE;
@@ -61,6 +95,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // UI and Audio Event Listeners from SceneManager
     window.addEventListener('planetZoom', (event) => {
+        // Completar tutorial si todavía estaba activo
+        if (tutorialState < 3) {
+            tutorialState = 3;
+            gsap.to(tutorialOverlay, {
+                opacity: 0,
+                duration: 0.5,
+                onComplete: () => tutorialOverlay.classList.add('hidden')
+            });
+        }
+
         const data = event.detail;
 
         // Show Back Button
