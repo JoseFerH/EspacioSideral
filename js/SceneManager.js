@@ -50,14 +50,28 @@ export class SceneManager {
         this.initPostProcessing();
         this.initStars();
 
-        // Listeners for interaction
-        window.addEventListener('click', this.onMouseClick.bind(this));
+        // Mobile-friendly click/tap detection
+        this.pointerDownPos = { x: 0, y: 0 };
+        this.renderer.domElement.addEventListener('pointerdown', this.onPointerDown.bind(this));
+        this.renderer.domElement.addEventListener('pointerup', this.onPointerUp.bind(this));
     }
 
-    onMouseClick(event) {
+    onPointerDown(event) {
+        this.pointerDownPos.x = event.clientX;
+        this.pointerDownPos.y = event.clientY;
+    }
+
+    onPointerUp(event) {
         if (this.isWarping) return;
 
-        // Ignorar clics en UI
+        // Calculate distance moved to distinguish between a tap and a drag
+        const deltaX = event.clientX - this.pointerDownPos.x;
+        const deltaY = event.clientY - this.pointerDownPos.y;
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        if (distance > 10) return; // It was a drag, ignore
+
+        // Ignore clicks on UI elements (though we are binding to domElement now, keeping for safety)
         if (event.target.id === 'back-button' || event.target.closest('#planet-info')) return;
 
         this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
