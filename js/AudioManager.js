@@ -5,11 +5,11 @@ export class AudioManager {
         this.audioContext = null;
         this.masterGain = null;
 
-        // Drone oscillators and filters
-        this.droneOscillators = [];
-        this.droneFilter = null;
-        this.droneGain = null;
-        this.isDronePlaying = false;
+        // Background music variables
+        this.bgMusicElement = null;
+        this.bgMusicSource = null;
+        this.musicFilter = null;
+        this.isMusicPlaying = false;
     }
 
     init() {
@@ -23,78 +23,51 @@ export class AudioManager {
         this.masterGain.connect(this.audioContext.destination);
     }
 
-    // Play a cinematic drone background sound
+    // Play background music from an external file
     playBackgroundMusic() {
         if (!this.audioContext) this.init();
-        if (this.isDronePlaying) return;
+        if (this.isMusicPlaying) return;
 
-        this.droneGain = this.audioContext.createGain();
-        this.droneGain.gain.value = 0.3; // Base volume
+        // Create the audio element if it doesn't exist
+        if (!this.bgMusicElement) {
+            this.bgMusicElement = new Audio('assets/audio/background.mp3');
+            this.bgMusicElement.loop = true;
 
-        this.droneFilter = this.audioContext.createBiquadFilter();
-        this.droneFilter.type = 'lowpass';
-        this.droneFilter.frequency.value = 1000; // Open filter initially
-        this.droneFilter.Q.value = 5;
+            // Create a MediaElementAudioSourceNode
+            this.bgMusicSource = this.audioContext.createMediaElementSource(this.bgMusicElement);
 
-        this.droneFilter.connect(this.droneGain);
-        this.droneGain.connect(this.masterGain);
+            // Create the filter for the zoom effect
+            this.musicFilter = this.audioContext.createBiquadFilter();
+            this.musicFilter.type = 'lowpass';
+            this.musicFilter.frequency.value = 20000; // Open filter initially (effectively bypassed)
 
-        // Create a rich "Interstellar" organ/strings chord using multiple oscillators
-        // Chord: Am9 (A, C, E, G, B) across different octaves
-        const baseA = 55; // A1
-        const frequencies = [
-            baseA,           // Root (A1)
-            baseA * 2,       // Octave (A2)
-            baseA * 2.378,   // Minor third (C3 approx 130.8 Hz)
-            baseA * 2.996,   // Perfect fifth (E3 approx 164.8 Hz)
-            baseA * 3.563,   // Minor seventh (G3 approx 196 Hz)
-            baseA * 4.489    // Major ninth (B3 approx 246.9 Hz)
-        ];
+            // Connect: Source -> Filter -> Master Gain -> Destination
+            this.bgMusicSource.connect(this.musicFilter);
+            this.musicFilter.connect(this.masterGain);
+        }
 
-        frequencies.forEach((freq, index) => {
-            const osc = this.audioContext.createOscillator();
-            // Use sawtooth and triangle for a brighter, more "organ-like" or string texture
-            osc.type = index % 2 === 0 ? 'sawtooth' : 'triangle';
-            osc.frequency.value = freq;
-
-            // Add slow LFO to simulate breathing/phasing strings or organ modulation
-            const lfo = this.audioContext.createOscillator();
-            lfo.type = 'sine';
-            lfo.frequency.value = 0.05 + (index * 0.02); // very slow modulation
-
-            const lfoGain = this.audioContext.createGain();
-            lfoGain.gain.value = freq * 0.01; // subtle pitch drift
-
-            lfo.connect(lfoGain);
-            lfoGain.connect(osc.frequency);
-
-            // Per-oscillator volume to balance the chord (lower the high frequencies)
-            const oscGain = this.audioContext.createGain();
-            oscGain.gain.value = 1.0 / (index + 1.5);
-
-            osc.connect(oscGain);
-            oscGain.connect(this.droneFilter);
-
-            osc.start();
-            lfo.start();
-
-            this.droneOscillators.push({ osc, lfo, lfoGain, oscGain });
-        });
-
-        this.isDronePlaying = true;
+        // Attempt to play the audio
+        const playPromise = this.bgMusicElement.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                this.isMusicPlaying = true;
+            }).catch(error => {
+                console.warn("Background music failed to play or file is missing (assets/audio/background.mp3):", error);
+            });
+        }
     }
 
-    // Adjust drone filter when zooming into a planet
+    // Adjust background music filter when zooming into a planet
     setZoomMode(isZoomed) {
-        if (!this.audioContext || !this.droneFilter) return;
+        if (!this.audioContext || !this.musicFilter) return;
 
         const now = this.audioContext.currentTime;
         if (isZoomed) {
             // Muffle the sound (lower low-pass frequency)
-            this.droneFilter.frequency.setTargetAtTime(300, now, 1);
+            this.musicFilter.frequency.setTargetAtTime(300, now, 1);
         } else {
-            // Open the filter back up
-            this.droneFilter.frequency.setTargetAtTime(1000, now, 1);
+            // Open the filter back up (return to full spectrum)
+            this.musicFilter.frequency.setTargetAtTime(20000, now, 1);
         }
     }
 

@@ -16,3 +16,11 @@
 127.0.0.1 - - [09/Apr/2026 00:03:25] "GET /js/SceneManager.js HTTP/1.1" 200 -
 127.0.0.1 - - [09/Apr/2026 00:03:25] "GET /js/PlanetFactory.js HTTP/1.1" 200 -
 127.0.0.1 - - [09/Apr/2026 00:03:25] "GET /js/main.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Apr/2026 00:12:44] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [09/Apr/2026 00:12:44] "GET /style.css HTTP/1.1" 200 -
+127.0.0.1 - - [09/Apr/2026 00:12:44] "GET /js/main.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Apr/2026 00:12:44] "GET /js/AudioManager.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Apr/2026 00:12:44] "GET /js/PlanetFactory.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Apr/2026 00:12:44] "GET /js/SceneManager.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Apr/2026 00:12:53] code 404, message File not found
+127.0.0.1 - - [09/Apr/2026 00:12:53] "GET /assets/audio/background.mp3 HTTP/1.1" 404 -
