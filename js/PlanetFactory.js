@@ -18,7 +18,7 @@ export const planetData = {
         radius: 0.5,
         distance: 15,
         speed: 0.04,
-        color: 0xaaaaaa,
+        color: 0xcccccc, // Lighter, more contrasted grey
         fontClass: 'font-minimalista',
         text: [
             "Al ser el planeta más rápido y cercano al Sol,",
@@ -32,7 +32,7 @@ export const planetData = {
         radius: 1.2,
         distance: 22,
         speed: 0.015,
-        color: 0xff9900,
+        color: 0xff7700, // Deeper, more saturated orange
         fontClass: 'font-elegante',
         text: [
             "Es el planeta más caliente.",
@@ -46,7 +46,7 @@ export const planetData = {
         radius: 1.25,
         distance: 30,
         speed: 0.01,
-        color: 0x00aaff,
+        color: 0x00d4ff, // Brighter, more cyan-blue
         fontClass: 'font-minimalista',
         text: [
             "¿Sabías que hay más de 8,200 millones",
@@ -60,7 +60,7 @@ export const planetData = {
         radius: 0.6,
         distance: 40,
         speed: 0.008,
-        color: 0xff3300,
+        color: 0xff1100, // Very saturated red
         fontClass: 'font-robotica',
         text: [
             "Representa la esperanza para la humanidad:",
@@ -74,7 +74,7 @@ export const planetData = {
         radius: 4,
         distance: 55,
         speed: 0.002,
-        color: 0xffcc88,
+        color: 0xffaa44, // More vivid orange-brown
         fontClass: 'font-elegante',
         text: [
             "Es tan grande que en su interior",
@@ -88,7 +88,7 @@ export const planetData = {
         radius: 3.5,
         distance: 75,
         speed: 0.0009,
-        color: 0xffeebb,
+        color: 0xffdd66, // Saturated yellow-gold
         fontClass: 'font-elegante',
         text: [
             "Se siente muy especial por sus",
@@ -102,7 +102,7 @@ export const planetData = {
         radius: 2,
         distance: 95,
         speed: 0.0004,
-        color: 0x00ffff,
+        color: 0x00ffee, // Slightly warmer, more vivid cyan
         fontClass: 'font-scifi',
         text: [
             "Parece que va un poco tomado",
@@ -115,7 +115,7 @@ export const planetData = {
         radius: 1.9,
         distance: 110,
         speed: 0.0001,
-        color: 0x0055ff,
+        color: 0x0033ff, // Deeper, more saturated deep blue
         fontClass: 'font-minimalista',
         text: [
             "Es el más lejano, frío y oscuro,",
