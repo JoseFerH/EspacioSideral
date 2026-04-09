@@ -33,6 +33,12 @@ export class AudioManager {
             this.bgMusicElement = new Audio('assets/audio/background.mp3');
             this.bgMusicElement.loop = true;
 
+            // Backup looping mechanism for older/mobile browsers
+            this.bgMusicElement.addEventListener('ended', () => {
+                this.bgMusicElement.currentTime = 0;
+                this.bgMusicElement.play().catch(() => {});
+            });
+
             // Create a MediaElementAudioSourceNode
             this.bgMusicSource = this.audioContext.createMediaElementSource(this.bgMusicElement);
 
